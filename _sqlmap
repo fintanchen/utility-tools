@@ -1,0 +1,43 @@
+#compdef sqlmap
+
+_sqlmap() {
+	_arguments \
+		"-h[Show basic help message and exit]"\
+		"-hh[Show advanced help message and exit]"\
+		"--version[Show program's version number and exit]"\
+		"-V[Verbosity level: 0-6 (default 1)]"\
+		'-u[Target URL (e.g. "http://www.site.com/vuln.php?id=1")]'\
+		"-g[Process Google dark results as target URLs]"\
+		'--data=[Data string to be sent through POST (e.g. "id=1")]'\
+		'--cookie[HTTP Cookie header value (e.g. "PHPSESSID=a8d127e..")]'\
+		'--random-agent[Use randomly selected HTTP User-Agent header value]'\
+		'--proxy=PROXY[Use a proxy to connect to the target URL]'\
+		'--tor[Use Tor anonymity network]'\
+		'--check-tor[Check to see if Tor is used properly]'\
+		'-p[Testable parameter(s)]'\
+		'--dbms[Force back-end DBMS to provided value]'\
+		'--level[Level of tests to perform (1-5, default 1)]'\
+		'--risk[Risk of tests to perform (1-3, default 1)]'\
+		'--technique[SQL injection techniques to use (default "BEUSTQ")]'\
+		'-a[Retrieve everything]'\
+		'-b[Retrieve DBMS banner]'\
+		'--current-user[Retrieve DBMS current user]'\
+		'--current-db[Retrieve DBMS current database]'\
+		'--passwords[Enumerate DBMS users password hashes]'\
+		'--tables[Enumerate DBMS database tables]'\
+		'--columns[Enumerate DBMS database table columns]'\
+		'--schema[Enumerate DBMS schema]'\
+		'--dump[Dump DBMS database table entries]'\
+		'--dump-all[Dump all DBMS databases tables entries]'\
+		'-D[DBMS database to enumerate]'\
+		'-T[DBMS database table(s) to enumerate]'\
+		'-C[DBMS database table column(s) to enumerate]'\
+		'--os-shell[Prompt for an interactive operating system shell]'\
+		'--os-pwn[Prompt for an OOB shell, Meterpreter or VNC]'\
+		'--batch[Never ask for user input, use the default behavior]'\
+		'--flush-session[Flush session files for current target]'\
+		'--sqlmap-shell[Prompt for an interactive sqlmap shell]'\
+		'--wizard[Simple wizard interface for beginner users]'\
+}
+
+_sqlmap
