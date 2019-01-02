@@ -1,11 +1,11 @@
 package main
 
 import (
-	"context"
 	"fmt"
 	"log"
 	"os"
 	"os/exec"
+	"sync"
 )
 
 var (
@@ -21,7 +21,7 @@ func main() {
 		log.Fatal("src", err)
 	}
 
-	ctx, cf := context.WithCancel(context.Background())
+	wg := sync.WaitGroup{}
 
 	for _, dir := range subDirs {
 		if dir == "github.com" || dir == "golang.org" {
@@ -51,7 +51,7 @@ func main() {
 
 				for _, repoName := range repoNames {
 					name := pullPath + name + "/" + repoName
-					go gitPull(ctx, name)
+					go gitPull(&wg, name)
 
 				}
 			}
@@ -59,10 +59,7 @@ func main() {
 
 	}
 
-	select {
-	case <-ctx.Done():
-		cf()
-	}
+	wg.Wait()
 }
 
 func getSubf(path string) ([]string, error) {
@@ -71,7 +68,10 @@ func getSubf(path string) ([]string, error) {
 	return subFs, err
 }
 
-func gitPull(ctx context.Context, path string) {
+func gitPull(wg *sync.WaitGroup, path string) {
+
+	wg.Add(1)
+	defer wg.Done()
 
 	err := os.Chdir(path)
 	if err != nil {
@@ -83,7 +83,6 @@ func gitPull(ctx context.Context, path string) {
 	if err != nil {
 		log.Println("Couldn't run ", err)
 	}
-	fmt.Println("Starting pull", path)
+	//	fmt.Println("Starting pull", path)
 	fmt.Println(string(o))
-	<-ctx.Done()
 }
