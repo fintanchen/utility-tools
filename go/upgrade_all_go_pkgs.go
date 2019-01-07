@@ -1,6 +1,7 @@
 package main
 
 import (
+	"errors"
 	"fmt"
 	"log"
 	"os"
@@ -16,47 +17,24 @@ var (
 func main() {
 	GOPATH := os.Getenv("GOPATH")
 
-	subDirs, err := getSubf(GOPATH + "/src/")
+	// Init WaitGroup.
+	wg := sync.WaitGroup{}
+	rw := sync.RWMutex{}
+
+	githubSubDirs, err := getSubf(GOPATH + "/src/github.com/")
 	if err != nil {
-		log.Fatal("src", err)
+		log.Fatal(errors.New("Get sub dir: Can't get sub dir."))
 	}
 
-	wg := sync.WaitGroup{}
-
-	for _, dir := range subDirs {
-		if dir == "github.com" || dir == "golang.org" {
-
-			var pullPath string
-			if dir == "github.com" {
-				pullPath = GOPATH + "/src/" + github
-			} else {
-				pullPath = GOPATH + "/src/" + golangx
-
-			}
-
-			userNames, err := getSubf(pullPath)
-			if err != nil {
-				log.Fatal("github.com", err)
-			}
-
-			for _, name := range userNames {
-
-				if name == "" {
-					break
-				}
-				repoNames, err := getSubf(pullPath + name)
-				if err != nil {
-					log.Println(repoNames, " ", err)
-				}
-
-				for _, repoName := range repoNames {
-					name := pullPath + name + "/" + repoName
-					go gitPull(&wg, name)
-
-				}
-			}
+	for _, dir := range githubSubDirs {
+		aim, err := getSubf(GOPATH + "/src/github.com/" + dir + "/")
+		if err != nil {
+			log.Println(errors.New("Range github sub dits: Can't get sub dirs"))
 		}
-
+		for _, aimd := range aim {
+			aimd = GOPATH + "/src/github.com/" + dir + "/" + aimd + "/"
+			gitPull(&wg, aimd, &rw)
+		}
 	}
 
 	wg.Wait()
@@ -64,14 +42,23 @@ func main() {
 
 func getSubf(path string) ([]string, error) {
 	p, err := os.Open(path)
+	if err != nil {
+		log.Println(err)
+	}
 	subFs, err := p.Readdirnames(0)
+	if err != nil {
+		log.Println(err)
+	}
+
 	return subFs, err
 }
 
-func gitPull(wg *sync.WaitGroup, path string) {
+func gitPull(wg *sync.WaitGroup, path string, rw *sync.RWMutex) {
 
+	rw.Lock()
 	wg.Add(1)
 	defer wg.Done()
+	fmt.Println("Starting pull", path)
 
 	err := os.Chdir(path)
 	if err != nil {
@@ -85,4 +72,5 @@ func gitPull(wg *sync.WaitGroup, path string) {
 	}
 	//	fmt.Println("Starting pull", path)
 	fmt.Println(string(o))
+	rw.Unlock()
 }
