@@ -19,5 +19,5 @@ yarn global upgrade
 rustup update
 
 # go
-go run $HOME/unSync/utility-tools/go/upgrade_all_go_pkgs.go
+go run $HOME/unSync/utility-tools/go/update_gopath_repo/upgrade_all_go_pkgs.go
 
