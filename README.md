@@ -2,10 +2,16 @@
 Some utility tools
 
 ## There are some utility tools...
-- zsh completion for pandoc:
+- zsh completion:
 > pandoc
 > sqlmap
-> - A script of upgrade all cask package for homebrew.
-> - A script of pull all $GOPATH/src/foo/bar/ repo.
+- A script is using to upgrade all packages in this system:
+> debian/apt
+> readhat/yum
+> osx/brew
+> gorepo
+> rustup
+> npm/yarn
+- A program to pull all $GOPATH/src/foo/bar/ repo.
 
 ### More tools are adding...
