@@ -10,6 +10,7 @@ import (
 
 var (
 	github = "github.com/"
+	golang = "golang.org/"
 )
 
 func main() {
@@ -20,17 +21,28 @@ func main() {
 	wg := sync.WaitGroup{}
 	rw := sync.RWMutex{}
 
-	aimDirs := walk(GOPATH)
+	// pull projects in $GOPATH/github.com/
+	aimDirs := walk(GOPATH, github)
 
 	for _, aim := range aimDirs {
 		go pull(&wg, &rw, aim)
 	}
+	wg.Wait()
 
+	wg = sync.WaitGroup{}
+	rw = sync.RWMutex{}
+
+	// pull projects in $GOPATH/golang.org/
+	aimDirs = walk(GOPATH, golang)
+
+	for _, aim := range aimDirs {
+		go pull(&wg, &rw, aim)
+	}
 	wg.Wait()
 }
 
-// subFiles get sub files in path.
-func subFiles(path string) ([]string, error) {
+// children get sub files in path.
+func children(path string) ([]string, error) {
 	p, err := os.Open(path)
 	if err != nil {
 		log.Println(err)
@@ -43,7 +55,8 @@ func subFiles(path string) ([]string, error) {
 	return subFs, err
 }
 
-// pull execute git pull
+// pull execute git pull in terminal for path.
+// Using rw_lock to show reminder and output in same screen.
 func pull(wg *sync.WaitGroup, rw *sync.RWMutex, path string) {
 
 	wg.Add(1)
@@ -68,24 +81,25 @@ func pull(wg *sync.WaitGroup, rw *sync.RWMutex, path string) {
 }
 
 // walk through the path.
-func walk(path string) []string {
+// returning dirs that need to pull
+func walk(path string, aim string) []string {
 
 	var pullDirs []string
-	github := path + "/src/github.com/"
-	authors, err := subFiles(github)
+	parent := path + "/src/" + aim
+	authors, err := children(parent)
 	if err != nil {
 		log.Println(err)
 	}
 
-	for _, dir := range authors {
-		dir = github + dir
-		reals, err := subFiles(dir + "/")
+	for _, author := range authors {
+		author = parent + author + "/"
+		projects, err := children(author)
 		if err != nil {
 			log.Println(err)
 		}
 
-		for _, real := range reals {
-			pullDirs = append(pullDirs, dir+"/"+real+"/")
+		for _, project := range projects {
+			pullDirs = append(pullDirs, author+project+"/")
 		}
 	}
 
