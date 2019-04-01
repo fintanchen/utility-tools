@@ -21,18 +21,14 @@ func main() {
 	wg := sync.WaitGroup{}
 	rw := sync.RWMutex{}
 
-	// pull projects in $GOPATH/github.com/
+	// pull projects in $GOPATH/src/github.com/
 	aimDirs := walk(GOPATH, github)
 
 	for _, aim := range aimDirs {
 		go pull(&wg, &rw, aim)
 	}
-	wg.Wait()
 
-	wg = sync.WaitGroup{}
-	rw = sync.RWMutex{}
-
-	// pull projects in $GOPATH/golang.org/
+	// pull projects in $GOPATH/src/golang.org/
 	aimDirs = walk(GOPATH, golang)
 
 	for _, aim := range aimDirs {

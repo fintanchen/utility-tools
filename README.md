@@ -4,26 +4,26 @@ Some utility tools
 
 ## There are some utility tools...
 
--   zsh completion:
-    > pandoc
-    > sqlmap
+### zsh completion:
 
--   Some useful script 
+-   pandoc
+-   sqlmap
 
-    1.  A script is using to upgrade all packages in this system:
-        > debian/apt
-        > readhat/yum
-        > osx/brew
-        > gorepo
-        > rustup
-        > npm/yarn
-    2.  A script to change the default language of office to Chinese, it can change the follow:
-        > Word
-        > PowerPrint
-        > Excel
-        > Outlook
+### Some useful script
 
+-   A script is using to upgrade all packages in this system:
+    > debian/apt
+    > readhat/yum
+    > osx/brew
+    > gorepo
+    > rustup
+    > npm/yarn
+-   A script to change the default language of office to Chinese, it can change the follow:
+    > Word
+    > PowerPrint
+    > Excel
+    > Outlook
 
--   A program to pull all $GOPATH/src/foo/bar/repo.
+### A program to pull all $GOPATH/src/foo/bar/repo.
 
-### More tools are adding...
+## More tools are adding...
