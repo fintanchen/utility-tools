@@ -52,18 +52,18 @@ Plug 'Chiel92/vim-autoformat'
 " Using a non-master branch
 Plug 'neoclide/coc.nvim', {'do': { -> coc#util#install()},
 	    \ 'for': [
-	    \ 'go','rust','json',
-	    \ 'ts','javascript','vim',
-	    \ 'sh', 'zsh','markdown',
-	    \ 'text', 'dockerfile','yml',
-	    \ 'lua'
-	    \ ]
+	    \		'go','rust','json',
+	    \		'ts','javascript','vim',
+	    \		'sh','zsh','markdown',
+	    \		'text','dockerfile','yml',
+	    \		'lua','gitcommit'
+	    \	     ]
 	    \ }
-Plug 'rdnetto/YCM-Generator', { 'branch': 'stable' , 'for': '' }
 
 " Using a tagged release; wildcard allowed (requires git 1.9.2 or above)
 Plug 'w0rp/ale', {'for': ['c','cpp']}
 Plug 'Valloric/YouCompleteMe', { 'for': ['c','cpp'] }
+Plug 'rdnetto/YCM-Generator', { 'branch': 'stable' , 'for': ['c','cpp']}
 " Plug 'fatih/vim-go', { 'tag': '*' , 'for': 'go' }
 
 " Plugin options
@@ -79,11 +79,11 @@ Plug 'Valloric/YouCompleteMe', { 'for': ['c','cpp'] }
 call plug#end()
 
 
-" ==============================================================================
+" ==================================================================================================
 "
 "				vim native setting
 "
-" ==============================================================================
+" ==================================================================================================
 " Setting for tmux
 if exists('$TMUX')
     set term=screen-256color
@@ -138,7 +138,7 @@ hi cfunctions ctermfg=81
 set langmenu=en_US
 let $LANG = 'en_US'
 
-" ================================================================================================
+" =================================================================================================
 
 " =================================================================================================
 "
@@ -181,9 +181,10 @@ let g:ycm_semantic_triggers =  {
 	    \ 'cs,lua,javascript': ['re!\w{1}'],
 	    \ }
 set completeopt=menu,menuone
-highlight PMenu ctermfg=0 ctermbg=246 guifg=black guibg=darkgrey
-highlight PMenuSel ctermfg=232 ctermbg=241 guifg=darkgrey guibg=black
+highlight PMenu ctermfg=255 ctermbg=235 guifg=darkgrey guibg=black
+highlight PMenuSel ctermfg=255 ctermbg=241 guifg=darkgrey guibg=black
 nmap <C-j> <Esc>:YcmCompleter GoTo<CR>
+
 " ================================================================================================
 
 
