@@ -10,8 +10,15 @@ import (
 )
 
 const (
-	efiVerifyPath     = "/sys/firmware/efi/efivars"
+	// Boot
+	efiVerifyPath = "/sys/firmware/efi/efivars"
+
+	// Network Connection
 	networkVerifySite = "www.baidu.com"
+
+	// mirrors
+	mirrorListPath = "/etc/pacman.d/mirrorlist"
+	defaultMirror  = "https://mirrors.ustc.edu.cn/$repo/os/$arch"
 )
 
 func main() {
@@ -24,11 +31,11 @@ func main() {
 	// Verify the boot mode
 	_, err := os.Stat(efiVerifyPath)
 	if os.IsNotExist(err) {
-		// gocolorful.Err("DON'T HAVE ", efiVerifyPath, ", MAY BE NOT ENABLE UEFI MODE.")
+		gocolorful.Err("DON'T HAVE ", efiVerifyPath, ", MAY BE NOT ENABLE UEFI MODE.")
 	}
 
 	// Connect to the internet
-	gocolorful.Info("Check Network Connection...")
+	gocolorful.Info("Checking Network Connection...")
 	ping := exec.Command("ping", networkVerifySite, "-t", "4")
 	o, err := ping.CombinedOutput()
 	if err != nil {
@@ -37,7 +44,7 @@ func main() {
 	fmt.Println(string(o))
 
 	// Update the system clock
-	gocolorful.Info("Check Network Connection...")
+	gocolorful.Info("Setting ntp service...")
 	setNtp := exec.Command("timedatectl", "set-ntp")
 	setNtp.Run()
 
@@ -46,6 +53,9 @@ func main() {
 	ntpStatus.Run()
 
 	// Partition the disks
+	// TODO: Complete it.
+	gocolorful.Info("Checking disk information...")
+	partStatus := exec.Command("gdisk")
 
 	// Format the partitions
 
@@ -55,30 +65,44 @@ func main() {
 	// 								Installation
 	// ===================================================================
 	// Select the mirrors
+	// * -> echo "Server = https://mirrors.ustc.edu.cn/$repo/os/$arch" > /etc/pacman.d/mirrorlist
 
 	// Install the base packages
+	// * -> pacstrap /mnt base
 
 	// ===================================================================
 	// 								Configuration
 	// ===================================================================
 	// Fstab
+	// * -> genfstab -U /mnt >> /mnt/etc/fstab
 
 	// Chroot
+	// * -> arch-chroot /mnt
 
 	// Time zone
+	// * -> ln -sf /usr/share/zoneinfo/Asia/ShangHai /etc/localtime
+	// * -> hwclock --systohc
 
 	// Localization
+	// * -> locale-gen
+	// * -> echo "LANG=en_US.UTF-8" >> /etc/locale.conf
 
 	// Network configuration
+	// * -> echo "$HOSTNAME" >> /etc/hostname
+	// * -> "127.0.0.1	localhost\n::1		localhost\n127.0.1.1	myhostname.localdomain	myhostname" > /etc/hosts
 
 	// Initramfs
+	// * -> mkinitcpio -p linux
 
 	// Root password
+	// * -> passwd
 
 	// Boot loader
+	// * -> pacman -S grub
 
 	// ===================================================================
 	// 								Reboot
 	// ===================================================================
 	// Reboot system
+	// * -> reboot
 }
