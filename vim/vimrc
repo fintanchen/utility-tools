@@ -1,1 +1,293 @@
-.vimrc
+"
+"			Coniguration for MacOS vim/nvim keyvchan@gmail.com
+"					last update 2019/6/30
+"
+"
+"					  -/+:.							 keyv@CMCC-EDU
+"					 :++++.							 OS: 64bit Mac OS X 10.14.4 18E226
+"					/+++/.							 Kernel: x86_64 Darwin 18.5.0
+"				.:-::- .+/:-``.::-					 Uptime: 2h 30m
+"			 .:/++++++/::::/++++++/:`				 Packages: 172
+"		   .:///////////////////////:`				 Shell: zsh 5.7.1
+"		   ////////////////////////`				 Resolution: 2880x1800
+"		  -+++++++++++++++++++++++`					 DE: Aqua
+"		  /++++++++++++++++++++++/					 WM: Quartz Compositor
+"		  /sssssssssssssssssssssss.					 WM Theme: Blue
+"		  :ssssssssssssssssssssssss-				 Font: Monaco 14
+"		   osssssssssssssssssssssssso/`				 CPU: Intel Core i7-8750H @ 2.20GHz
+"		   `syyyyyyyyyyyyyyyyyyyyyyyy+`				 GPU: Radeon Pro 560X / Intel UHD Graphics 630
+"			`ossssssssssssssssssssss/				 RAM: 9333MiB / 16384MiB
+"			  :ooooooooooooooooooo+.
+"			   `:+oo+/:-..-:/+o+/-
+"
+"===================================================================================================
+"
+"					Coniguration for vim-plug
+"
+"===================================================================================================
+"
+" Specify a directory for plugins
+" - For Neovim: ~/.local/share/nvim/plugged
+" - Avoid using standard Vim directory names like 'plugin'
+call plug#begin('~/.vim/plugged')
+
+" Make sure you use single quotes
+
+" Shorthand notation; fetches https://github.com/junegunn/vim-easy-align
+" Plug 'junegunn/vim-easy-align'
+
+" Any valid git URL is allowed
+" Plug 'https://github.com/junegunn/vim-github-dashboard.git'
+
+" Multiple Plug commands can be written in a single line using | separators
+" Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
+Plug 'itchyny/lightline.vim'
+Plug 'jiangmiao/auto-pairs'
+Plug 'Chiel92/vim-autoformat'
+Plug 'fintanchen/vim-monokai'
+" Plug 'sbdchd/neoformat'
+
+" On-demand loading
+" Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
+" Plug 'tpope/vim-fireplace', { 'for': 'clojure' }
+Plug 'neoclide/coc.nvim', {'do': { -> coc#util#install()},
+			\ 'for': [
+			\		'go','rust','json',
+			\		'ts','javascript','vim',
+			\		'sh','zsh','markdown',
+			\		'text','dockerfile','yml',
+			\		'lua','gitcommit','python',
+			\		'ruby','typescript','cs',
+			\		'conf','perl'
+			\		 ]
+			\ }
+
+
+" Using a tagged release; wildcard allowed (requires git 1.9.2 or above)
+Plug 'w0rp/ale', {'for': ['c','cpp']}
+Plug 'Valloric/YouCompleteMe', { 'for': ['c','cpp'] }
+Plug 'rdnetto/YCM-Generator', { 'branch': 'stable' , 'for': ['c','cpp']}
+" Plug 'fatih/vim-go', { 'tag': '*' , 'for': 'go' }
+
+" Plugin options
+" Plug 'nsf/gocode', { 'tag': 'v.20150303', 'rtp': 'vim' }
+
+" Plugin outside ~/.vim/plugged with post-update hook
+" Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+
+" Unmanaged plugin (manually installed and updated)
+" Plug '~/my-prototype-plugin'
+
+" Initialize plugin system
+call plug#end()
+
+
+" ==================================================================================================
+"
+"				vim native setting
+"
+" ==================================================================================================
+" Setting for tmux
+if exists('$TMUX')
+	set term=screen-256color
+endif
+
+" Setting for semantic
+" if !exists("g:ycm_semantic_triggers")
+"    let g:ycm_semantic_triggers = {}
+" endif
+" let g:ycm_semantic_triggers['typescript'] = ['.']
+
+" vim native setting
+syntax on
+set number
+set softtabstop=4
+set tabstop=4
+set shiftwidth=4
+set scrolloff=5
+set splitbelow splitright
+set relativenumber "display relativenumber
+set mouse=nicr
+set backspace=2
+set path+=**
+set wildmenu
+set shell=/usr/local/bin/zsh
+set termguicolors
+set hidden
+filetype plugin on
+" autocmd BufNewFile,BufRead *.go set notermguicolors
+
+" keymap
+
+" limit cpmplete height
+set pumheight=10
+
+" Disable paren match
+function! g:FuckThatMatchParen ()
+	if exists(":NoMatchParen")
+		:NoMatchParen
+	endif
+endfunction
+
+augroup plugin_initialize
+	autocmd!
+	autocmd VimEnter * call FuckThatMatchParen()
+augroup END
+
+" set smartindent
+set cmdheight=2
+set nopaste
+set wrap
+set t_Co=256
+colorscheme monokai
+set encoding=utf-8
+autocmd BufNewFile,BufRead * :syntax match cfunctions "\<[a-zA-Z_][a-zA-Z_0-9]*\>[^()]*)("me=e-2
+autocmd BufNewFile,BufRead * :syntax match cfunctions "\<[a-zA-Z_][a-zA-Z_0-9]*\>\s*("me=e-1
+hi cfunctions ctermfg=81
+set langmenu=en_US
+let $LANG = 'en_US'
+
+" =================================================================================================
+"
+"					setting for Neoformat
+"
+" =================================================================================================
+au BufWrite * :Autoformat
+
+" =================================================================================================
+"
+"					setting for loght-light
+"
+" =================================================================================================
+set laststatus=2
+let g:lightline = {
+			\ 'colorscheme': 'one',
+			\ }
+" =================================================================================================
+
+" =================================================================================================
+"
+"					setting for YouCompleteMe
+"
+" =================================================================================================
+let g:ycm_show_diagnostics_ui = 0
+let g:ycm_use_clangd = 0
+let g:ycm_global_ycm_extra_conf='$HOME/.ycm_extra_conf.py'
+let g:ycm_min_num_of_chars_for_completion = 1
+let g:ycm_max_num_identifier_candidates = 5
+let g:ycm_complete_in_comments = 1
+let g:ycm_complete_in_strings = 1
+let g:ycm_collect_identifiers_from_comments_and_strings = 1
+let g:ycm_collect_identifiers_from_tags_files = 1
+let g:ycm_seed_identifiers_with_syntax = 1
+let g:ycm_add_preview_to_completeopt = 0
+let g:ycm_semantic_triggers =  {
+			\ 'c,cpp,python,java,go,erlang,perl': ['re!\w{1}'],
+			\ 'cs,lua,javascript': ['re!\w{1}'],
+			\ }
+set completeopt=menu,menuone
+highlight PMenu ctermfg=255 ctermbg=235 guifg=white guibg=black
+highlight PMenuSel ctermfg=255 ctermbg=241 guifg=darkgrey guibg=black
+nmap <C-j> <Esc>:YcmCompleter GoTo<CR>
+
+" =================================================================================================
+"
+"					setting for vim-go
+"
+" =================================================================================================
+let g:go_fmt_command = "goimports"
+" let g:go_auto_sameids = 1
+let g:go_auto_type_info = 0
+let g:go_fmt_fail_silently = 1
+let g:go_fmt_autosave = 0
+
+" =================================================================================================
+"
+"					setting for ale
+"
+" =================================================================================================
+let g:ale_sign_column_always = 0
+let g:ale_set_signs = 0
+" let g:ale_completion_delay = 500
+let g:ale_echo_delay = 20
+let g:ale_lint_delay = 500
+let g:ale_echo_msg_format = '[%linter%] %code: %%s'
+let g:ale_c_gcc_options = '-Wall -std=c11'
+let g:ale_cpp_gcc_options = '-Wall -std=c++17'
+
+
+" =================================================================================================
+"
+"					setting for Coc-vim
+"
+" =================================================================================================
+function! CocCurrentFunction()
+	return get(b:, 'coc_current_function', '')
+endfunction
+
+autocmd FileType json syntax match Comment +\/\/.\+$+
+
+let g:lightline = {
+			\ 'colorscheme': 'wombat',
+			\ 'active': {
+			\   'left': [ [ 'mode', 'paste' ],
+			\             [ 'cocstatus', 'readonly', 'filename', 'modified' ] ]
+			\ },
+			\ 'component_function': {
+			\   'cocstatus': 'coc#status'
+			\ },
+			\ }
+
+" Use tab for trigger completion with characters ahead and navigate.
+" Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
+function! s:check_back_space() abort
+	let col = col('.') - 1
+	return !col || getline('.')[col - 1]  =~ '\s'
+endfunction
+
+inoremap <silent><expr> <TAB>
+			\ pumvisible() ? "\<C-n>" :
+			\ <SID>check_back_space() ? "\<TAB>" :
+			\ coc#refresh()
+
+" Use K for show documentation in preview window
+nnoremap <silent> K :call <SID>show_documentation()<CR>
+
+function! s:show_documentation()
+	if &filetype == 'vim'
+		execute 'h '.expand('<cword>')
+	else
+		call CocAction('doHover')
+	endif
+endfunction
+
+" Using CocList
+" Show all diagnostics
+nnoremap <silent> <space>a  :<C-u>CocList diagnostics<cr>
+" Manage extensions
+nnoremap <silent> <space>e  :<C-u>CocList extensions<cr>
+" Show commands
+nnoremap <silent> <space>c  :<C-u>CocList commands<cr>
+" Find symbol of current document
+nnoremap <silent> <space>o  :<C-u>CocList outline<cr>
+" Search workspace symbols
+nnoremap <silent> <space>s  :<C-u>CocList -I symbols<cr>
+" Do default action for next item.
+nnoremap <silent> <space>j  :<C-u>CocNext<CR>
+" Do default action for previous item.
+nnoremap <silent> <space>k  :<C-u>CocPrev<CR>
+" Resume latest coc list
+nnoremap <silent> <space>p  :<C-u>CocListResume<CR>
+
+" Remap keys for gotos
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
+
+set signcolumn=no
+
+" Use <c-space> for trigger completion.
+inoremap <silent><expr> <c-space> coc#refresh()
+
+
