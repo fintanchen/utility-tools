@@ -4,12 +4,12 @@ Some utility tools
 
 ## There are some utility tools...
 
-### zsh completion:
+### zsh-completion:
 
 -   pandoc
 -   sqlmap
 
-### Some useful script
+### shell
 
 -   A script is using to upgrade all packages in this system:
     > debian/apt
@@ -24,6 +24,8 @@ Some utility tools
     > Excel
     > Outlook
 
-### A program to pull all $GOPATH/src/foo/bar/repo.
+### go
+
+-   A program to pull all $GOPATH/src/foo/bar/repo.
 
 ## More tools are adding...
