@@ -35,6 +35,7 @@ func main() {
 		go pull(&wg, &rw, aim)
 	}
 	wg.Wait()
+
 }
 
 // children get sub files in path.
@@ -67,11 +68,16 @@ func pull(wg *sync.WaitGroup, rw *sync.RWMutex, path string) {
 	}
 
 	cmd := exec.Command("git", "pull")
-	o, err := cmd.CombinedOutput()
+	cmd.Stdout = os.Stdout
+	cmd.Stdin = os.Stdin
+	cmd.Stderr = os.Stderr
+
+	err = cmd.Run()
 	if err != nil {
 		log.Println("Couldn't run ", err)
 	}
-	fmt.Println(string(o))
+
+	fmt.Println(" ")
 
 	rw.Unlock()
 }
