@@ -4,8 +4,8 @@
 "
 "
 "					  -/+:.							 keyv@CMCC-EDU
-"					 :++++.							 OS: 64bit Mac OS X 10.14.4 18E226
-"					/+++/.							 Kernel: x86_64 Darwin 18.5.0
+"					 :++++.							 OS: 64bit Mac OS X 10.14.6 18G84
+"					/+++/.							 Kernel: x86_64 Darwin 18.7.0
 "				.:-::- .+/:-``.::-					 Uptime: 2h 30m
 "			 .:/++++++/::::/++++++/:`				 Packages: 172
 "		   .:///////////////////////:`				 Shell: zsh 5.7.1
@@ -44,13 +44,13 @@ call plug#begin('~/.vim/plugged')
 Plug 'itchyny/lightline.vim'
 Plug 'jiangmiao/auto-pairs'
 Plug 'Chiel92/vim-autoformat'
-Plug 'fintanchen/vim-monokai'
+Plug 'keyvchan/vim-monokai'
 " Plug 'sbdchd/neoformat'
 
 " On-demand loading
 " Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
 " Plug 'tpope/vim-fireplace', { 'for': 'clojure' }
-Plug 'neoclide/coc.nvim', {'do': { -> coc#util#install()},
+Plug 'neoclide/coc.nvim', {'tag': '*', 'branch': 'release',
 			\ 'for': [
 			\		'go','rust','json',
 			\		'ts','javascript','vim',
@@ -58,7 +58,7 @@ Plug 'neoclide/coc.nvim', {'do': { -> coc#util#install()},
 			\		'text','dockerfile','yml',
 			\		'lua','gitcommit','python',
 			\		'ruby','typescript','cs',
-			\		'conf','perl'
+			\		'conf','perl','tex'
 			\		 ]
 			\ }
 
@@ -118,6 +118,7 @@ filetype plugin on
 " autocmd BufNewFile,BufRead *.go set notermguicolors
 
 " keymap
+
 
 " limit cpmplete height
 set pumheight=10
