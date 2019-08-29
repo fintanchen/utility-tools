@@ -2,7 +2,6 @@
 "			Coniguration for MacOS vim/nvim keyvchan@gmail.com
 "					last update 2019/8/13
 "
-"
 "					  -/+:.							 keyv@CMCC-EDU
 "					 :++++.							 OS: 64bit Mac OS X 10.14.6 18G84
 "					/+++/.							 Kernel: x86_64 Darwin 18.7.0
@@ -20,7 +19,6 @@
 "			  :ooooooooooooooooooo+.
 "			   `:+oo+/:-..-:/+o+/-
 "
-"
 "===================================================================================================
 "
 "					Coniguration for vim-plug
@@ -32,7 +30,6 @@ Plug 'itchyny/lightline.vim'
 Plug 'jiangmiao/auto-pairs'
 Plug 'Chiel92/vim-autoformat'
 Plug 'keyvchan/vim-monokai'
-" Plug 'scrooloose/nerdtree'
 Plug 'neoclide/coc.nvim', {'do': 'yarn install --frozen-lockfile '}
 
 " Initialize plugin system
@@ -57,6 +54,8 @@ set shiftwidth=4
 set scrolloff=5
 set splitbelow splitright
 set relativenumber "display relativenumber
+
+" set mouse as 'a'
 set mouse=a
 set backspace=2
 set path+=**
@@ -82,23 +81,33 @@ augroup plugin_initialize
 	autocmd VimEnter * call FuckThatMatchParen()
 augroup END
 
-" set smartindent
+
 set cmdheight=2
 set laststatus=2
+
+" fix paste intend
 set nopaste
 set wrap
 set t_Co=256
 colorscheme monokai
-set encoding=utf-8
-autocmd BufNewFile,BufRead * :syntax match cfunctions "\<[a-zA-Z_][a-zA-Z_0-9]*\>[^()]*)("me=e-2
-autocmd BufNewFile,BufRead * :syntax match cfunctions "\<[a-zA-Z_][a-zA-Z_0-9]*\>\s*("me=e-1
-hi cfunctions ctermfg=81
+
+" set signcolumn and line number background to transparency
+highlight LineNr guibg=NONE
+highlight SignColumn guibg=NONE
+
+" define a group highlight for pattern like \"foo()"\
+" autocmd BufNewFile,BufRead * :syntax match cfunctions "\<[a-zA-Z_][a-zA-Z_0-9]*\>[^()]*)("me=e-2
+" autocmd BufNewFile,BufRead * :syntax match cfunctions "\<[a-zA-Z_][a-zA-Z_0-9]*\>\s*("me=e-1
+" hi cfunctions ctermfg=81
+
+" set vim language to avoid encoding error.
 set langmenu=en_US
+set encoding=utf-8
 let $LANG = 'en_US'
 
 " =================================================================================================
 "
-"					setting for Neoformat
+"					setting for Autoformat
 "
 " =================================================================================================
 au BufWrite * :Autoformat
@@ -112,14 +121,10 @@ au BufWrite * :Autoformat
 highlight PMenu ctermfg=255 ctermbg=235 guifg=white guibg=NONE
 highlight PMenuSel ctermfg=255 ctermbg=241 guifg=darkgrey guibg=NONE
 
-" if hidden is not set, TextEdit might fail.
-set hidden
-
 " Some servers have issues with backup files, see #649
 set nobackup
 set nowritebackup
 
-" Better display for messages
 set cmdheight=2
 
 " You will have bad experience for diagnostic messages when it's default 4000.
@@ -159,15 +164,19 @@ let g:lightline = {
 			\ 'colorscheme': 'one',
 			\ 'active': {
 			\   'left': [ [ 'mode', 'paste' ],
-			\             [  'filename',  'modified', 'cocstatus', 'currentfunction', 'readonly',  ] ]
+			\             [ 'path', 'filename',  'modified', 'cocstatus', 'currentfunction', 'readonly',  ] ]
 			\ },
 			\ 'component_function': {
 			\   'cocstatus': 'coc#status',
-			\   'currentfunction': 'CocCurrentFunction'
+			\   'currentfunction': 'CocCurrentFunction',
+			\	'path': 'LightLineFilename'
 			\ },
 			\ 'separator': { 'left': "\ue0b0", 'right': "\ue0b2" },
 			\ 'subseparator': { 'left': "\ue0b1", 'right': "\ue0b3" },
 			\ }
+function! LightLineFilename()
+	return expand('%:p:h')
+endfunction
 
 let s:palette = g:lightline#colorscheme#{g:lightline.colorscheme}#palette
 let s:palette.normal.middle = [ [ 'NONE', 'NONE', 'NONE', 'NONE' ] ]
