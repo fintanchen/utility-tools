@@ -5,10 +5,14 @@ import (
 	"io/ioutil"
 	"log"
 	"os"
+	"path/filepath"
 	"regexp"
+	"strings"
 )
 
 func main() {
+
+	dst := os.Args[1]
 
 	// Get home dir
 	home, err := os.UserHomeDir()
@@ -21,11 +25,54 @@ func main() {
 		log.Fatal(err)
 	}
 
-	rangeAllFiles(files, home)
+	dotFiles := rangeAllFiles(files)
+
+	for _, dotFile := range dotFiles {
+		if dotFile.IsDir() {
+			err = filepath.Walk(home+"/"+dotFile.Name(), func(path string, info os.FileInfo, err error) error {
+				if err != nil {
+					fmt.Printf("prevent panic by handling failure accessing a path %q: %v\n", path, err)
+					return err
+				}
+
+				trimEd := strings.TrimPrefix(path, home)
+				if info.IsDir() {
+
+					err := os.Mkdir(dst+trimEd, os.ModePerm)
+					if err != nil {
+						log.Fatal(err)
+					}
+
+					return nil
+				}
+
+				fmt.Println(dst + trimEd)
+				err = os.Link(path, dst+trimEd)
+				if err != nil {
+					log.Fatal(err)
+				}
+
+				fmt.Printf("Linked file: %q\n", dst+trimEd)
+
+				return nil
+			})
+
+		} else {
+
+			err := os.Link(home+"/"+dotFile.Name(), dst+dotFile.Name())
+			if err != nil {
+				log.Fatal(err)
+			}
+			fmt.Printf("Linked file: %q\n", dst+dotFile.Name())
+		}
+
+	}
 
 }
 
-func rangeAllFiles(files []os.FileInfo, home string) {
+func rangeAllFiles(files []os.FileInfo) (dotFiles []os.FileInfo) {
+
+	var dotfiles = []os.FileInfo{}
 
 	// Range all file in the home directory.
 	for _, file := range files {
@@ -36,37 +83,11 @@ func rangeAllFiles(files []os.FileInfo, home string) {
 
 		if reg.Match([]byte(file.Name())) {
 			fmt.Println(file.Name())
-			handleDotFile(file, home)
+			dotfiles = append(dotfiles, file)
 		}
 	}
 
-}
-
-func handleDotFile(file os.FileInfo, home string) {
-	if !file.IsDir() {
-		fmt.Println("Link")
-		err := os.Link(home+"/"+file.Name(), "./"+file.Name())
-		if err != nil {
-			log.Fatal(err)
-		}
-		fmt.Println("./" + file.Name())
-
-	}
-
-	if file.IsDir() {
-
-		// err := os.Mkdir("./"+file.Name(), os.ModePerm)
-		// if err != nil {
-		// 	log.Fatal(err)
-		// }
-
-		// err = os.Chdir("./" + file.Name())
-		// if err != nil {
-		// 	log.Fatal(err)
-		// }
-
-		// files, err := ioutil.ReadDir(home + "/" + file.Name())
-		// rangeAllFiles(files, true)
-	}
+	// Get all dot files
+	return dotfiles
 
 }
