@@ -1,34 +1,16 @@
-"
-"			Coniguration for MacOS vim/nvim keyvchan@gmail.com
-"					last update 2019/8/13
-"
-"					  -/+:.							 keyv@CMCC-EDU
-"					 :++++.							 OS: 64bit Mac OS X 10.14.6 18G84
-"					/+++/.							 Kernel: x86_64 Darwin 18.7.0
-"				.:-::- .+/:-``.::-					 Uptime: 2h 30m
-"			 .:/++++++/::::/++++++/:`				 Packages: 172
-"		   .:///////////////////////:`				 Shell: zsh 5.7.1
-"		   ////////////////////////`				 Resolution: 2880x1800
-"		  -+++++++++++++++++++++++`					 DE: Aqua
-"		  /++++++++++++++++++++++/					 WM: Quartz Compositor
-"		  /sssssssssssssssssssssss.					 WM Theme: Blue
-"		  :ssssssssssssssssssssssss-				 Font: Monaco 14
-"		   osssssssssssssssssssssssso/`				 CPU: Intel Core i7-8750H @ 2.20GHz
-"		   `syyyyyyyyyyyyyyyyyyyyyyyy+`				 GPU: Radeon Pro 560X / Intel UHD Graphics 630
-"			`ossssssssssssssssssssss/				 RAM: 9333MiB / 16384MiB
-"			  :ooooooooooooooooooo+.
-"			   `:+oo+/:-..-:/+o+/-
+"						Coniguration for MacOS vim/nvim keyvchan@gmail.com
+"									last update 2019/9/3
 "
 "===================================================================================================
 "
-"					Coniguration for vim-plug
+"									Coniguration for vim-plug
 "
 "===================================================================================================
 call plug#begin('~/.vim/plugged')
 
 Plug 'itchyny/lightline.vim'
 Plug 'jiangmiao/auto-pairs'
-Plug 'Chiel92/vim-autoformat'
+Plug 'sbdchd/neoformat'
 Plug 'keyvchan/vim-monokai'
 Plug 'neoclide/coc.nvim', {'do': 'yarn install --frozen-lockfile '}
 
@@ -37,7 +19,7 @@ call plug#end()
 
 " ==================================================================================================
 "
-"				vim native setting
+"									vim native setting
 "
 " ==================================================================================================
 " Setting for tmux
@@ -55,13 +37,13 @@ set scrolloff=5
 set splitbelow splitright
 set relativenumber "display relativenumber
 
-" set mouse as 'a'
+" set mouse clicked as 'a'
 set mouse=a
 set backspace=2
 set path+=**
 set wildmenu
-set shell=/usr/local/bin/zsh
 set termguicolors
+set guicursor=
 set hidden
 let g:netrw_banner = 0
 filetype plugin on
@@ -85,6 +67,7 @@ augroup END
 set cmdheight=2
 set laststatus=2
 
+
 " fix paste intend
 set nopaste
 set wrap
@@ -107,14 +90,17 @@ let $LANG = 'en_US'
 
 " =================================================================================================
 "
-"					setting for Autoformat
+"									setting for Neoformat
 "
 " =================================================================================================
-au BufWrite * :Autoformat
+augroup fmt
+  autocmd!
+  autocmd BufWritePre * undojoin | Neoformat
+augroup END
 
 " =================================================================================================
 "
-"					setting for Coc-vim
+"									setting for Coc-vim
 "
 " =================================================================================================
 
@@ -259,4 +245,5 @@ nnoremap <silent> <space>j  :<C-u>CocNext<CR>
 nnoremap <silent> <space>k  :<C-u>CocPrev<CR>
 " Resume latest coc list
 nnoremap <silent> <space>p  :<C-u>CocListResume<CR>
+
 
