@@ -1,27 +1,19 @@
 "						Coniguration for MacOS vim/nvim keyvchan@gmail.com
-"									last update 2019/9/3
-"
-"===================================================================================================
-"
-"									Coniguration for vim-plug
-"
-"===================================================================================================
+"									last update 2019/10/23
+
 call plug#begin('~/.vim/plugged')
 
 Plug 'itchyny/lightline.vim'
 Plug 'jiangmiao/auto-pairs'
 Plug 'sbdchd/neoformat'
+Plug 'scrooloose/nerdtree'
+Plug 'ryanoasis/vim-devicons'
 Plug 'keyvchan/vim-monokai'
 Plug 'neoclide/coc.nvim', {'do': 'yarn install --frozen-lockfile '}
 
 " Initialize plugin system
 call plug#end()
 
-" ==================================================================================================
-"
-"									vim native setting
-"
-" ==================================================================================================
 " Setting for tmux
 if exists('$TMUX')
 	set term=screen-256color
@@ -36,6 +28,9 @@ set shiftwidth=4
 set scrolloff=5
 set splitbelow splitright
 set relativenumber "display relativenumber
+set ignorecase
+let mapleader=","
+set noshowmode
 
 " set mouse clicked as 'a'
 set mouse=a
@@ -67,43 +62,37 @@ augroup END
 set cmdheight=2
 set laststatus=2
 
-
 " fix paste intend
 set nopaste
+
 set wrap
 set t_Co=256
 colorscheme monokai
-
-" set signcolumn and line number background to transparency
-highlight LineNr guibg=NONE
-highlight SignColumn guibg=NONE
-
-" define a group highlight for pattern like \"foo()"\
-" autocmd BufNewFile,BufRead * :syntax match cfunctions "\<[a-zA-Z_][a-zA-Z_0-9]*\>[^()]*)("me=e-2
-" autocmd BufNewFile,BufRead * :syntax match cfunctions "\<[a-zA-Z_][a-zA-Z_0-9]*\>\s*("me=e-1
-" hi cfunctions ctermfg=81
 
 " set vim language to avoid encoding error.
 set langmenu=en_US
 set encoding=utf-8
 let $LANG = 'en_US'
 
-" =================================================================================================
-"
-"									setting for Neoformat
-"
-" =================================================================================================
+" Nerdtree
+autocmd StdinReadPre * let s:std_in=1
+autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTree' argv()[0] | wincmd p | ene | exe 'cd '.argv()[0] | endif
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+let NERDTreeMinimalUI = 1
+let NERDTreeShowHidden = 1
+let g:NERDTreeStatusline = '%#NonText#'
+
+" Neoformat
 augroup fmt
-  autocmd!
-  autocmd BufWritePre * undojoin | Neoformat
+	autocmd!
+	autocmd BufWritePre * undojoin | Neoformat
 augroup END
 
-" =================================================================================================
+" coc.nvim
 "
-"									setting for Coc-vim
+" Copy from README in coc.nvim page
+" =============================================================================
 "
-" =================================================================================================
-
 highlight PMenu ctermfg=255 ctermbg=235 guifg=white guibg=NONE
 highlight PMenuSel ctermfg=255 ctermbg=241 guifg=darkgrey guibg=NONE
 
@@ -125,9 +114,9 @@ set signcolumn=yes
 " Use tab for trigger completion with characters ahead and navigate.
 " Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
 inoremap <silent><expr> <TAB>
-			\ pumvisible() ? "\<C-n>" :
-			\ <SID>check_back_space() ? "\<TAB>" :
-			\ coc#refresh()
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#refresh()
 inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
 
 function! s:check_back_space() abort
@@ -137,10 +126,6 @@ endfunction
 
 " Use <c-space> to trigger completion.
 inoremap <silent><expr> <c-space> coc#refresh()
-
-" Use <cr> to confirm completion, `<C-g>u` means break undo chain at current position.
-" Coc only does snippet and additional edit on confirm.
-inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
 
 function! CocCurrentFunction()
 	return get(b:, 'coc_current_function', '')
@@ -164,6 +149,7 @@ function! LightLineFilename()
 	return expand('%:p:h')
 endfunction
 
+" Set middle of status line  to transprant
 let s:palette = g:lightline#colorscheme#{g:lightline.colorscheme}#palette
 let s:palette.normal.middle = [ [ 'NONE', 'NONE', 'NONE', 'NONE' ] ]
 let s:palette.inactive.middle = s:palette.normal.middle
@@ -245,5 +231,5 @@ nnoremap <silent> <space>j  :<C-u>CocNext<CR>
 nnoremap <silent> <space>k  :<C-u>CocPrev<CR>
 " Resume latest coc list
 nnoremap <silent> <space>p  :<C-u>CocListResume<CR>
-
+" =============================================================================
 
