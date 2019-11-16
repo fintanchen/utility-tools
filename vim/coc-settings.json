@@ -1,0 +1,49 @@
+{
+  "languageserver": {
+    "golang": {
+      "command": "gopls",
+      "rootPatterns": ["go.mod"],
+      "filetypes": ["go"]
+    },
+    "clangd": {
+      "command": "clangd",
+      "args": [
+        "--background-index",
+        "--hidden-features",
+        "--clang-tidy",
+        "--index"
+      ],
+      "rootPatterns": [
+        "compile_flags.txt",
+        "compile_commands.json",
+        ".vim/",
+        ".git/",
+        ".hg/"
+      ],
+      "filetypes": ["c", "cpp", "objc", "objcpp"]
+    }
+  },
+
+  "python.jediEnabled": false,
+  "python.linting.mypyEnabled": true,
+  "python.linting.mypyPath": "/usr/local/bin/mypy",
+
+  "codeLens.enable": true,
+
+  "suggest.noselect": true,
+  "suggest.enablePreselect": false,
+
+  "emmet.preferences": {},
+
+  "list.nextKeymap": "<C-n>",
+  "list.previousKeymap": "<C-p>",
+
+  "rust-analyzer.enableCargoWatchOnStartup": "enabled",
+
+  "diagnostic.refreshOnInsertMode": true,
+
+  "explorer.icon.enableNerdfont": true,
+  "explorer.file.autoExpandSingleDirectory": false,
+  "explorer.file.showHiddenFiles": true,
+  "explorer.file.autoReveal": true
+}
