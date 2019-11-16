@@ -6,10 +6,9 @@ call plug#begin('~/.vim/plugged')
 Plug 'itchyny/lightline.vim'
 Plug 'jiangmiao/auto-pairs'
 Plug 'sbdchd/neoformat'
-Plug 'scrooloose/nerdtree'
-Plug 'ryanoasis/vim-devicons'
 Plug 'keyvchan/vim-monokai'
 Plug 'neoclide/coc.nvim', {'do': 'yarn install --frozen-lockfile '}
+Plug 'rizzatti/dash.vim'
 
 " Initialize plugin system
 call plug#end()
@@ -73,14 +72,6 @@ colorscheme monokai
 set langmenu=en_US
 set encoding=utf-8
 let $LANG = 'en_US'
-
-" Nerdtree
-autocmd StdinReadPre * let s:std_in=1
-autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTree' argv()[0] | wincmd p | ene | exe 'cd '.argv()[0] | endif
-autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
-let NERDTreeMinimalUI = 1
-let NERDTreeShowHidden = 1
-let g:NERDTreeStatusline = '%#NonText#'
 
 " Neoformat
 augroup fmt
@@ -233,3 +224,4 @@ nnoremap <silent> <space>k  :<C-u>CocPrev<CR>
 nnoremap <silent> <space>p  :<C-u>CocListResume<CR>
 " =============================================================================
 
+let g:dash_activate=0
