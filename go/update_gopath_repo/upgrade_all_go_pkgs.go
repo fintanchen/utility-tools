@@ -19,20 +19,20 @@ func main() {
 
 	// Init WaitGroup.
 	wg := sync.WaitGroup{}
-	rw := sync.RWMutex{}
+	// rw := sync.RWMutex{}
 
 	// pull projects in $GOPATH/src/github.com/
 	aimDirs := walk(GOPATH, github)
 
 	for _, aim := range aimDirs {
-		go pull(&wg, &rw, aim)
+		go pull(&wg, aim)
 	}
 
 	// pull projects in $GOPATH/src/golang.org/
 	aimDirs = walk(GOPATH, golang)
 
 	for _, aim := range aimDirs {
-		go pull(&wg, &rw, aim)
+		go pull(&wg, aim)
 	}
 	wg.Wait()
 
@@ -54,12 +54,11 @@ func children(path string) ([]string, error) {
 
 // pull execute git pull in terminal for path.
 // Using rw_lock to show reminder and output in same screen.
-func pull(wg *sync.WaitGroup, rw *sync.RWMutex, path string) {
+func pull(wg *sync.WaitGroup, path string) {
 
 	wg.Add(1)
 	defer wg.Done()
 
-	rw.Lock()
 	fmt.Println("Starting pull", path)
 
 	err := os.Chdir(path)
@@ -68,18 +67,17 @@ func pull(wg *sync.WaitGroup, rw *sync.RWMutex, path string) {
 	}
 
 	cmd := exec.Command("git", "pull")
-	cmd.Stdout = os.Stdout
-	cmd.Stdin = os.Stdin
-	cmd.Stderr = os.Stderr
+	//	cmd.Stdout = os.Stdout
+	//	cmd.Stdin = os.Stdin
+	//	cmd.Stderr = os.Stderr
 
 	err = cmd.Run()
 	if err != nil {
 		log.Println("Couldn't run ", err)
 	}
 
-	fmt.Println(" ")
+	fmt.Println(path, "\u2714")
 
-	rw.Unlock()
 }
 
 // walk through the path.
