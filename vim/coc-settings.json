@@ -1,17 +1,13 @@
 {
   "languageserver": {
-    "golang": {
-      "command": "gopls",
-      "rootPatterns": ["go.mod"],
-      "filetypes": ["go"]
-    },
     "clangd": {
       "command": "clangd",
       "args": [
         "--background-index",
         "--hidden-features",
         "--clang-tidy",
-        "--index"
+        "--index",
+        "--suggest-missing-includes"
       ],
       "rootPatterns": [
         "compile_flags.txt",
@@ -21,6 +17,14 @@
         ".hg/"
       ],
       "filetypes": ["c", "cpp", "objc", "objcpp"]
+    },
+    "lua": {
+      "command": "lua-lsp",
+      "filetypes": ["lua"]
+    },
+    "swift": {
+      "command": "sourcekit-lsp",
+      "filetypes": ["swift"]
     }
   },
 
@@ -32,6 +36,7 @@
 
   "suggest.noselect": true,
   "suggest.enablePreselect": false,
+  "suggest.maxCompleteItemCount": 1000,
 
   "emmet.preferences": {},
 
@@ -43,7 +48,12 @@
   "diagnostic.refreshOnInsertMode": true,
 
   "explorer.icon.enableNerdfont": true,
-  "explorer.file.autoExpandSingleDirectory": false,
   "explorer.file.showHiddenFiles": true,
-  "explorer.file.autoReveal": true
+  "explorer.file.autoReveal": true,
+
+  "go.goplsPath": "/Users/keyv/go/bin/gopls",
+  "go.goplsOptions": {
+    "completeUnimported": true,
+    "staticcheck": true
+  }
 }
