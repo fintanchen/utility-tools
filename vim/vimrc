@@ -36,7 +36,7 @@ set backspace=2
 set path+=**
 set wildmenu
 set termguicolors
-" set guicursor=
+set guicursor=
 set hidden
 let g:netrw_banner = 0
 filetype plugin on

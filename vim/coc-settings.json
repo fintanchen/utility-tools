@@ -38,14 +38,14 @@
   "suggest.enablePreselect": false,
   "suggest.maxCompleteItemCount": 1000,
 
-  "emmet.preferences": {},
-
   "list.nextKeymap": "<C-n>",
   "list.previousKeymap": "<C-p>",
 
   "rust-analyzer.enableCargoWatchOnStartup": "enabled",
 
   "diagnostic.refreshOnInsertMode": true,
+  "diagnostic.virtualText": true,
+  "diagnostic.checkCurrentLine": false,
 
   "explorer.icon.enableNerdfont": true,
   "explorer.file.showHiddenFiles": true,
